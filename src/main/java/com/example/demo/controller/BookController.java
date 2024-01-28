@@ -21,6 +21,26 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
+    @GetMapping("/get-all-books-by-author-price")
+    public ResponseEntity<List<Book>> getAllBooksByAuthorAndPrice(
+            @RequestParam String author, @RequestParam double price
+    ){
+        List<Book> books = repository.findAllByAuthorAndPrice(author, price);
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/get-book/{id}")
+    public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
+       Optional<Book> book = repository.findById(id);
+       return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/get-book-by-name/{name}")
+    public ResponseEntity<Optional<Book>> getBookByName(@PathVariable String name) {
+        Optional<Book> book = Optional.ofNullable(repository.findByName(name));
+        return ResponseEntity.ok(book);
+    }
+
     @PostMapping("/save-book")
     public void saveBook(@RequestBody Book book){
         repository.save(book);
