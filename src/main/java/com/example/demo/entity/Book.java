@@ -1,9 +1,12 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.Query;
 
 @Entity
 @Table(name = "book")
+@NamedQuery(name="Book.getBookByGreaterThan", query = "select b from Book b where b.price > :price")
+@NamedNativeQuery(name="Book.findByAuthorNamedNative",  query = "select * from book where author = :author", resultClass = Book.class)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

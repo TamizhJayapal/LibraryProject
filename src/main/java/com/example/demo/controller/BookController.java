@@ -29,6 +29,12 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
+    @GetMapping("/get-all-books-by-price/{price}")
+    public ResponseEntity<List<Book>> getAllBooksByPrice(@PathVariable double price){
+        List<Book> books = repository.getBookByGreaterThan(price);
+        return ResponseEntity.ok(books);
+    }
+
     @GetMapping("/get-book/{id}")
     public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
        Optional<Book> book = repository.findById(id);
@@ -39,6 +45,24 @@ public class BookController {
     public ResponseEntity<Optional<Book>> getBookByName(@PathVariable String name) {
         Optional<Book> book = Optional.ofNullable(repository.findByName(name));
         return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/get-book-by-author/{author}")
+    public ResponseEntity<Optional<Book>> getBookByAuthor(@PathVariable String author) {
+        Optional<Book> book = Optional.ofNullable(repository.findByAuthorName(author));
+        return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/get-book-by-author-named-native/{author}")
+    public ResponseEntity<List<Book>> getBookByAuthorNamedNative(@PathVariable String author) {
+        List<Book> book = repository.findByAuthorNamedNative(author);
+        return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/get-book-by-author-native/{author}")
+    public ResponseEntity<List<Book>> getBookByAuthorNative(@PathVariable String author) {
+        List<Book> books = repository.findByAuthorNameWithNativeQuery(author);
+        return ResponseEntity.ok(books);
     }
 
     @PostMapping("/save-book")
